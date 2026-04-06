@@ -1,6 +1,6 @@
 # QA Portfolio — Automation Exercise
 
-A end-to-end QA portfolio project testing [automationexercise.com](https://automationexercise.com) — a full e-commerce web application. This project covers manual test cases, exploratory testing, API testing with Postman, and UI automation with Playwright.
+A end-to-end QA portfolio project testing [automationexercise.com](https://automationexercise.com) a full e-commerce web application. This project covers manual test cases, exploratory testing, API testing with Postman, and UI automation with Playwright.
 
 ---
 
