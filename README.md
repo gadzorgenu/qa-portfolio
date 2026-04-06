@@ -27,15 +27,14 @@ This project was built to demonstrate practical QA engineering skills including 
 ```
 qa-portfolio/
 ├── README.md
+├── AutomationExcersice API tests.postman_collection.json  # Postman collection export
 ├── test-cases/
-│   └── test_cases.md        # 15 manual test cases
+│   └── test-cases.md        # Manual test cases
 ├── bug-reports/
 │   ├── bugs.md              # Bug reports with steps to reproduce
 │   └── screenshots/         # Evidence for each bug
-├── api-tests/
-│   └── collection.json      # Postman collection export
-└── automation/
-    └── tests/               # Playwright automated test scripts
+├── api-tests/               # API test assets
+└── automation/              # Playwright automated test scripts
 ```
 
 ---
@@ -43,7 +42,7 @@ qa-portfolio/
 ## Test Coverage
 
 ### Manual Testing
-15 test cases covering the following flows:
+Test cases covering the following flows:
 
 - **User Registration** — valid signup, duplicate email, missing fields
 - **Login** — correct credentials, wrong password, empty form
@@ -52,19 +51,24 @@ qa-portfolio/
 - **Checkout** — complete purchase, proceed without login
 
 ### API Testing
-6 API tests built in Postman:
+9 API tests built in Postman covering user authentication, account management, and product data retrieval:
 
 | Method | Endpoint | What It Tests |
 |---|---|---|
 | GET | /api/productsList | Returns full product list with correct structure |
 | GET | /api/brandsList | Returns brand data with status 200 |
-| POST | /api/login | Valid credentials return success response |
-| POST | /api/login | Invalid credentials return error response |
+| POST | /api/verifyLogin | Valid credentials return success response |
+| POST | /api/verifyLogin | Invalid credentials return error response |
+| POST | /api/verifyLogin | Missing parameters return appropriate error |
 | POST | /api/createAccount | New user created successfully |
+| POST | /api/createAccount | Duplicate email edge case handled correctly |
 | DELETE | /api/deleteAccount | Account deleted, returns 200 |
+| DELETE | /api/deleteAccount | Non-existent account edge case handled |
+
+Each request includes assertions for HTTP status codes, response time (under 3000ms), response body structure, field validation, security checks, and environment variable management.
 
 ### UI Automation
-5 automated test scripts built with Playwright:
+Automated test scripts built with Playwright:
 
 - Successful login
 - Failed login with wrong password
@@ -105,19 +109,21 @@ npx playwright show-report
 
 ## Bug Reports Summary
 
-| ID | Title | Severity | Priority | Status |
-|---|---|---|---|---|
-| BUG-001 | [Title] | Medium | High | Open |
-| BUG-002 | [Title] | Low | Medium | Open |
-| BUG-003 | [Title] | Low | Low | Open |
+| ID | Module | Title | Severity | Priority | Status |
+|---|---|---|---|---|---|
+| BUG-001 | Registration | February date not limited to 28/29 days | Medium | Medium | Open |
+| BUG-002 | Registration | Phone number accepts alphabetic characters | High | High | Open |
+| BUG-003 | Registration | Email field accepts invalid formats | High | High | Open |
+| BUG-004 | Registration | Country dropdown has very limited options | Low | Low | Open |
+| BUG-005 | Registration | Form fields lack proper validation | High | High | Open |
+| BUG-006 | Products | Filter selection not persisted on navigation | High | High | Open |
+| BUG-007 | Products | Product hover state adds no new information | Low | Low | Open |
+| BUG-008 | API | Incorrect Content-Type header (text/html vs application/json) | Medium | Medium | Open |
+| BUG-009 | API | Internal Django framework details exposed on 404 responses | High | High | Open |
+
+**Total bugs found:** 9 &nbsp;|&nbsp; **High severity:** 5 &nbsp;|&nbsp; **Medium severity:** 2 &nbsp;|&nbsp; **Low severity:** 2
 
 Full bug reports with screenshots are in the `/bug-reports` folder.
-
----
-
-## API Test Results
-
-![Postman Tests Passing](bug-reports/screenshots/postman-results.png)
 
 ---
 
