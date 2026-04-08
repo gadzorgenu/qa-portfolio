@@ -1,4 +1,4 @@
-const {Builder, BY, until} = require('selenium-webdriver');
+const {Builder, By, until} = require('selenium-webdriver');
 
 const chrome = require('chromedriver');
 
@@ -16,36 +16,34 @@ const testSuccessfulLogin = async () => {
     const driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        // Go to site
         await driver.get(BASE_URL);
 
-        // Click login link
-        const loginLink = await waitFor(driver, By.css('a[href="/login"]'));
+        const loginLink = await waitFor(driver, By.linkText('Signup / Login'));
         await loginLink.click();
 
-        // Fill email
         const emailField = await waitFor(driver, By.css('input[data-qa="login-email"]'));
         await emailField.sendKeys(VALID_EMAIL);
 
-        // Fill password
         const passwordField = await waitFor(driver, By.css('input[data-qa="login-password"]'));
         await passwordField.sendKeys(VALID_PASSWORD);
 
-        // Click login button
         const loginButton = await waitFor(driver, By.css('button[data-qa="login-button"]'));
         await loginButton.click();
 
-        // Wait for redirect to homepage
-        await driver.wait(until.urlIs(BASE_URL + '/'), TIMEOUT);
+        // Wait for URL to change away from login page
+        await driver.wait(async () => {
+            const url = await driver.getCurrentUrl();
+            return !url.includes('/login');
+        }, TIMEOUT);
 
-        // Assert logged in text is visible
-        const loggedInText = await waitFor(driver, By.css('a:has-text("Logged in as")'));
-        const isDisplayed = await loggedInText.isDisplayed();
+        // Check logged in by looking for logout link
+        const logoutLink = await waitFor(driver, By.css('a[href="/logout"]'));
+        const isDisplayed = await logoutLink.isDisplayed();
 
         if (isDisplayed) {
             console.log('✓ TC-004 PASSED: Successful login');
         } else {
-            console.log('✗ TC-004 FAILED: Logged in text not visible');
+            console.log('✗ TC-004 FAILED: Logout link not visible');
         }
 
     } catch (error) {
